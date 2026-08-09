@@ -4,10 +4,10 @@ import Footer from '../components/Footer'
 import Hero from '../components/Hero'
 import Navbar from '../components/Navbar'
 
-function LandingPage() {
+function LandingPage({ backendStatus }) {
   return (
     <div className="min-h-screen overflow-x-hidden bg-slate-900" id="top">
-      <Navbar />
+      <Navbar backendStatus={backendStatus} />
       <main>
         <Hero />
         <Features />
