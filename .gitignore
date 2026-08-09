@@ -24,6 +24,11 @@ lerna-debug.log*
 .vite/
 .eslintcache
 
+# Python
+backend/venv/
+__pycache__/
+*.py[cod]
+
 # Editor and OS files
 .vscode/*
 !.vscode/extensions.json

@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import { checkBackendHealth } from './services/api'
 
 function NotFoundPage() {
   return (
@@ -22,10 +24,35 @@ function NotFoundPage() {
 }
 
 function App() {
+  const [backendStatus, setBackendStatus] = useState('checking')
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function checkHealth() {
+      try {
+        await checkBackendHealth()
+        if (isMounted) {
+          setBackendStatus('connected')
+        }
+      } catch {
+        if (isMounted) {
+          setBackendStatus('unavailable')
+        }
+      }
+    }
+
+    checkHealth()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<LandingPage />} path="/" />
+        <Route element={<LandingPage backendStatus={backendStatus} />} path="/" />
         <Route element={<LoginPage />} path="/login" />
         <Route element={<SignupPage />} path="/signup" />
         <Route element={<NotFoundPage />} path="*" />
